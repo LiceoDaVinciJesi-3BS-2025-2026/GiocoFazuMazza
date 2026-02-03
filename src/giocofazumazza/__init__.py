@@ -13,25 +13,25 @@ textRect = font.render('Esci' , True , "white")
 
  running = True
 
-    Titlefont = pygame.font.SysFont('Impact', 70)
-    Normalfont = pygame.font.SysFont('Impact', 30)
+Titlefont = pygame.font.SysFont('Impact', 70)
+Normalfont = pygame.font.SysFont('Impact', 30)
 
-    game_end = Titlefont.render("Hai Perso", True, "red")
-    close_tip = Normalfont.render("Click ESC to exit", True, "blue","yellow")
+game_end = Titlefont.render("Hai Perso", True, "red")
+close_tip = Normalfont.render("Click ESC to exit", True, "blue","yellow")
 
-    while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
                 running = False
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    running = False
                     
-        pygame.display.flip()
+    pygame.display.flip()
 
 
-    screen.blit(game_end, (100,100))
-    screen.blit(close_tip, (100,300))
+screen.blit(game_end, (100,100))
+screen.blit(close_tip, (100,300))
         
-    pygame.quit()
+pygame.quit()
                     
