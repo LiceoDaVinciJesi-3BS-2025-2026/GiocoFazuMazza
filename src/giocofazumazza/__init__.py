@@ -1,17 +1,17 @@
-def main() -> None:
-    import pygame
 
-    pygame.init()
+import pygame
 
-    screen = pygame.display.set_mode( (1900, 1000) )
+pygame.init()
 
-    pygame.display.set_caption("this game is too MASSIVE")
+screen = pygame.display.set_mode( (1900, 1000) )
 
-    font = pygame.font.SysFont('comicsansms',30) 
-    textRect = font.render('Esci' , True , "white") 
-    buttonRect = pygame.Rect(800 // 2, 600 //2, 140, 40)
+pygame.display.set_caption("this game is too MASSIVE")
 
-    running = True
+font = pygame.font.SysFont('comicsansms',30) 
+textRect = font.render('Esci' , True , "white") 
+   buttonRect = pygame.Rect(800 // 2, 600 //2, 140, 40)
+
+ running = True
 
     Titlefont = pygame.font.SysFont('Impact', 70)
     Normalfont = pygame.font.SysFont('Impact', 30)
