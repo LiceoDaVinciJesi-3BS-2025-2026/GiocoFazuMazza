@@ -9,9 +9,9 @@ pygame.display.set_caption("this game is too MASSIVE")
 
 font = pygame.font.SysFont('comicsansms',30) 
 textRect = font.render('Esci' , True , "white") 
-   buttonRect = pygame.Rect(800 // 2, 600 //2, 140, 40)
+buttonRect = pygame.Rect(800 // 2, 600 //2, 140, 40)
 
- running = True
+running = True
 
 Titlefont = pygame.font.SysFont('Impact', 70)
 Normalfont = pygame.font.SysFont('Impact', 30)
