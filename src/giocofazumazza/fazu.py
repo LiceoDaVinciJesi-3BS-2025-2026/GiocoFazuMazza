@@ -28,7 +28,7 @@ enemy_bullets = []
 x = SCREEN_WIDTH // 2
 y = SCREEN_HEIGHT // 2
 w, h = 40, 40
-speed = 10
+speed = 10   
 
 clock = pygame.time.Clock()
 running = True
