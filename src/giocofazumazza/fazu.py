@@ -15,7 +15,7 @@ imgSfondo = pygame.transform.scale(imgSfondo, (SCREEN_WIDTH, SCREEN_HEIGHT))
 imgBees = pygame.image.load("bees.png")
 imgBees = pygame.transform.scale(imgBees, (40, 40))
 
-imgConquest = pygame.image.load("Conquest.jpg") 
+imgConquest = pygame.image.load("Conquest.png") 
 imgConquest = pygame.transform.scale(imgConquest,(100,100))
 
 ADD_ENEMY = pygame.USEREVENT + 1
@@ -88,7 +88,7 @@ while running:
     # 🔫 Movimento proiettili nemici
     for bullet in enemy_bullets[:]:
         bullet.y += 15
-        pygame.draw.rect(screen, (255, 0, 0), bullet)
+        pygame.draw.rect(screen, (255, 255, 255 ), bullet)
         if bullet.y > SCREEN_HEIGHT:
             enemy_bullets.remove(bullet)
 
