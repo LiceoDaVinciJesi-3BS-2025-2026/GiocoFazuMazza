@@ -3,8 +3,8 @@ import random
 
 pygame.init()
 
-SCREEN_WIDTH = 1900
-SCREEN_HEIGHT = 1000
+SCREEN_WIDTH = 1500
+SCREEN_HEIGHT = 800
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("this game is too MASSIVE")
@@ -65,8 +65,11 @@ def level1():
     y = SCREEN_HEIGHT // 2
     w, h = 40, 40
     speed = 10   
-
+    
+    punti = 0
     running = True
+    font = pygame.font.SysFont("comicsansms", 32)
+
 
     while running:
         clock.tick(60)
@@ -125,8 +128,20 @@ def level1():
                 enemy_bullets.remove(bullet)
 
             if bullet.colliderect(player):
-                print("HAI PERSO! COLPITO!")
                 running = False
+                stato_perdita = True
+                
+                if stato_perdita:
+                    imgSfondo = pygame.image.load("place.jpg")
+                    imgSfondo = pygame.transform.scale(imgSfondo, (SCREEN_WIDTH, SCREEN_HEIGHT))
+                    
+                    font_perdita = pygame.font.SysFont("comicsansms", 120)
+                    testo_perdita = font_perdita.render("YOU LOST", True, (255,0,0))
+                    screen.blit(testo_perdita,
+                                (SCREEN_WIDTH//2 - testo_perdita.get_width()//2,
+                                 SCREEN_HEIGHT//2 - testo_perdita.get_height()//2))
+                    pygame.display.flip()
+                    pygame.time.wait(3000)
 
         # Nemici
         for enemy in enemies[:]:
@@ -135,16 +150,51 @@ def level1():
             if random.randint(0, 150) < 2:
                 bullet = pygame.Rect(enemy.x + 50, enemy.y + 100, 10, 12)
                 enemy_bullets.append(bullet)
-
+            
             for bullet in player_bullets[:]:
                 if enemy.colliderect(bullet):
                     enemies.remove(enemy)
                     player_bullets.remove(bullet)
+                    punti += 100
                     break
 
             if player.colliderect(enemy):
-                print("HAI PERSO!")
                 running = False
+                stato_perdita = True
+                
+                if stato_perdita:
+                    imgSfondo = pygame.image.load("place.jpg")
+                    imgSfondo = pygame.transform.scale(imgSfondo, (SCREEN_WIDTH, SCREEN_HEIGHT))
+                    
+                    font_perdita = pygame.font.SysFont("comicsansms", 120)
+                    testo_perdita = font_perdita.render("YOU LOST", True, (255,0,0))
+                    screen.blit(testo_perdita,
+                                (SCREEN_WIDTH//2 - testo_perdita.get_width()//2,
+                                 SCREEN_HEIGHT//2 - testo_perdita.get_height()//2))
+                    pygame.display.flip()
+                    pygame.time.wait(3000)
+        
+        testo_punti = font.render("Punti: " + str(punti), True, (255, 0, 0))
+        screen.blit(testo_punti, (SCREEN_WIDTH - 250, 20))
+        
+        if punti >= 2000:
+            running = False
+            stato_vittoria = True
+            
+            if stato_vittoria:
+                imgSfondo = pygame.image.load("place.jpg")
+                imgSfondo = pygame.transform.scale(imgSfondo, (SCREEN_WIDTH, SCREEN_HEIGHT))
+                
+                font_vittoria = pygame.font.SysFont("comicsansms", 120)
+                testo_vittoria = font_vittoria.render("YOU WON!!", True, (255,255,0))
+                screen.blit(testo_vittoria,
+                            (SCREEN_WIDTH//2 - testo_vittoria.get_width()//2,
+                             SCREEN_HEIGHT//2 - testo_vittoria.get_height()//2))
+                pygame.display.flip()
+                pygame.time.wait(3000)
+
+
+        
 
         pygame.display.flip()
 
