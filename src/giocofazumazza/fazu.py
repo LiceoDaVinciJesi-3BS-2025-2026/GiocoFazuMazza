@@ -118,7 +118,99 @@ def main() -> None:
                 running = False
 
         pygame.display.flip()
+    def level2():
+        import random
+    # ====== dati giocatore ======
+        nome = "invincible"
+        hp_1 = 200
+        difesa_1 = 10
+        attack_1 = 50
+    #    while True:
+    #        doge_1 = random.randint(1,10)
+    #        if doge_1 <= 5:
+    #            doge = True
+    #        if doge_2 > 5:
+    #            doge = False
+        nome = "omni man"
+        hp_2 = 500
+        difesa_2 = 5
+        attack_2 = 30
+        
+        doge = False
+        
+        def turn_player():
+            nonlocal hp_1
+            nonlocal hp_2
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_1:
+                        critico =  random.randint(1,100)
+                        if critico >= 10:
+                            hp_2 -= (attack_1*2) + difesa_2
+                        else:
+                            hp_2 -= attack + difesa_2
+                    if event.key == pygame.K_2:
+                        doge = random.randint(1,50)
+                        if doge >= 50:
+                            doge = True
+                        else:
+                            doge = False
+                    if event.key == pygame.K_3:
+                        difesa_1 = 20
+                    if event.key == pygame.K_4:
+                        hp_2 -= random.randint(10,70) + difesa_2
+        
+        def turn_bot():
+            move = random.randint(1,4)
+            nonlocal hp_1
+            nonlocal hp_2
+            while True:
+                if move == 1:
+                    difesa_2 = 20
+                    break
+                elif move == 2:
+                    if doge == True:
+                        break
+                    critico = random.randint(10,100)
+                    if critico >= 10:
+                        hp_1 -= attack_2*2 + difesa_1
+                        break
+                    else:
+                        hp_1 -= attack_2 + difesa_1
+                        break
+                elif move == 3:
+                    hp_2 += 20
+                    break
+                elif move == 4:
+                    if doge == True:
+                        break
+                    hp_1 -= random.randint(30,60) + difesa_1
+                    break
+                
+        while True:
+            turn_player()
+            turn_bot()
+            
+            if difesa_1 > 10:
+                difesa -= 5
+            if difesa_2 > 5:
+                difesa -= 5
+            if doge == True:
+                doge_2 = random.randint(1,3)
+                if doge_2 == 1:
+                    doge = False
+                else:
+                    ""
+            if hp_1 == 0:
+                print("YOU LOST")
+                break
+            if hp_2 == 0:
+                print("YOU WON!")
+                   
 
-    pygame.quit()
+    # --------------------- START ---------------------
+    home_screen()
+            
+pygame.quit()
 if __name__ == "__main__":
     main()
