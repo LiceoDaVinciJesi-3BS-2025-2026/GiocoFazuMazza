@@ -1,6 +1,7 @@
 def main():
     import pygame
     import random
+    import sys
 
     pygame.init()
 
@@ -27,7 +28,7 @@ def main():
 
             screen.blit(title, (SCREEN_WIDTH//2 - title.get_width()//2, 200))
             screen.blit(level1_text, (SCREEN_WIDTH//2 - level1_text.get_width()//2, 500))
-            screen.blit(level2_text, (SCREEN_WIDTH//2 - level2_text.get_width()//2, 550))  
+            screen.blit(level2_text, (SCREEN_WIDTH//2 - level2_text.get_width()//2, 550))
             screen.blit(quit_text, (SCREEN_WIDTH//2 - quit_text.get_width()//2, 600))
 
             pygame.display.flip()
@@ -35,17 +36,16 @@ def main():
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
-                    exit()
+                    sys.exit()
 
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_1:
                         level1()
                     if event.key == pygame.K_2:
-                        level2
+                        level2()
                     if event.key == pygame.K_ESCAPE:
                         pygame.quit()
-                        exit()
-
+                        sys.exit()
 
     # --------------------- LIVELLO 1 ---------------------
     def level1():
@@ -56,8 +56,8 @@ def main():
         imgBees = pygame.image.load("bees.png")
         imgBees = pygame.transform.scale(imgBees, (40, 40))
 
-        imgConquest = pygame.image.load("Conquest.png") 
-        imgConquest = pygame.transform.scale(imgConquest,(100,100))
+        imgConquest = pygame.image.load("Conquest.png")
+        imgConquest = pygame.transform.scale(imgConquest, (100, 100))
 
         ADD_ENEMY = pygame.USEREVENT + 1
         pygame.time.set_timer(ADD_ENEMY, 1000)
@@ -69,12 +69,11 @@ def main():
         x = SCREEN_WIDTH // 2
         y = SCREEN_HEIGHT // 2
         w, h = 40, 40
-        speed = 10   
-        
+        speed = 10
+
         punti = 0
         running = True
         font = pygame.font.SysFont("comicsansms", 32)
-
 
         while running:
             clock.tick(60)
@@ -82,7 +81,7 @@ def main():
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
-                    exit()
+                    sys.exit()
 
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
@@ -93,14 +92,9 @@ def main():
                         player_bullets.append(bullet)
 
                 if event.type == ADD_ENEMY:
-                    enemy_width = 100
-                    enemy_height = 100
-                    side_margin = 300  
-
-                    posx = random.randint(side_margin, SCREEN_WIDTH - enemy_width - side_margin)
+                    posx = random.randint(300, SCREEN_WIDTH - 300)
                     posy = random.randint(120, 250)
-
-                    enemies.append(pygame.Rect(posx, posy, enemy_width, enemy_height)) 
+                    enemies.append(pygame.Rect(posx, posy, 100, 100))
 
             keys = pygame.key.get_pressed()
 
@@ -114,7 +108,6 @@ def main():
                 y += speed
 
             screen.blit(imgSfondo, (0, 0))
-
             player = pygame.Rect(x, y, w, h)
             screen.blit(imgBees, (x, y))
 
@@ -134,19 +127,6 @@ def main():
 
                 if bullet.colliderect(player):
                     running = False
-                    stato_perdita = True
-                    
-                    if stato_perdita:
-                        imgSfondo = pygame.image.load("place.jpg")
-                        imgSfondo = pygame.transform.scale(imgSfondo, (SCREEN_WIDTH, SCREEN_HEIGHT))
-                        
-                        font_perdita = pygame.font.SysFont("comicsansms", 120)
-                        testo_perdita = font_perdita.render("YOU LOST", True, (255,0,0))
-                        screen.blit(testo_perdita,
-                                    (SCREEN_WIDTH//2 - testo_perdita.get_width()//2,
-                                     SCREEN_HEIGHT//2 - testo_perdita.get_height()//2))
-                        pygame.display.flip()
-                        pygame.time.wait(3000)
 
             # Nemici
             for enemy in enemies[:]:
@@ -155,7 +135,7 @@ def main():
                 if random.randint(0, 150) < 2:
                     bullet = pygame.Rect(enemy.x + 50, enemy.y + 100, 10, 12)
                     enemy_bullets.append(bullet)
-                
+
                 for bullet in player_bullets[:]:
                     if enemy.colliderect(bullet):
                         enemies.remove(enemy)
@@ -165,108 +145,18 @@ def main():
 
                 if player.colliderect(enemy):
                     running = False
-                    stato_perdita = True
-                    
-                    if stato_perdita:
-                        imgSfondo = pygame.image.load("place.jpg")
-                        imgSfondo = pygame.transform.scale(imgSfondo, (SCREEN_WIDTH, SCREEN_HEIGHT))
-                        
-                        font_perdita = pygame.font.SysFont("comicsansms", 120)
-                        testo_perdita = font_perdita.render("YOU LOST", True, (255,0,0))
-                        screen.blit(testo_perdita,
-                                    (SCREEN_WIDTH//2 - testo_perdita.get_width()//2,
-                                     SCREEN_HEIGHT//2 - testo_perdita.get_height()//2))
-                        pygame.display.flip()
-                        pygame.time.wait(3000)
-            
+
             testo_punti = font.render("Punti: " + str(punti), True, (255, 0, 0))
             screen.blit(testo_punti, (SCREEN_WIDTH - 250, 20))
-            
+
+            pygame.display.flip()
+
             if punti >= 2000:
                 running = False
-                stato_vittoria = True
-                
-                if stato_vittoria:
-                    imgSfondo = pygame.image.load("place.jpg")
-                    imgSfondo = pygame.transform.scale(imgSfondo, (SCREEN_WIDTH, SCREEN_HEIGHT))
-                    
-                    font_vittoria = pygame.font.SysFont("comicsansms", 120)
-                    testo_vittoria = font_vittoria.render("YOU WON!!", True, (255,255,0))
-                    screen.blit(testo_vittoria,
-                                (SCREEN_WIDTH//2 - testo_vittoria.get_width()//2,
-                                 SCREEN_HEIGHT//2 - testo_vittoria.get_height()//2))
-                    pygame.display.flip()
-                    pygame.time.wait(3000)
-
-
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                running = False
-
-            if event.type == ADD_ENEMY:
-                x = random.randint(0, SCREEN_WIDTH - 100)
-                y = random.randint(0, SCREEN_HEIGHT // 3)
-                enemies.append(pygame.Rect(x, y, 100, 100))
-
-        # -------- INPUT PLAYER --------
-        keys = pygame.key.get_pressed()
-
-        if keys[pygame.K_LEFT] and player_rect.left > 0:
-            player_rect.x -= player_speed
-        if keys[pygame.K_RIGHT] and player_rect.right < SCREEN_WIDTH:
-            player_rect.x += player_speed
-        if keys[pygame.K_UP] and player_rect.top > 0:
-            player_rect.y -= player_speed
-        if keys[pygame.K_DOWN] and player_rect.bottom < SCREEN_HEIGHT:
-            player_rect.y += player_speed
-
-        # -------- SPARO NEMICI --------
-        frame_count += 1
-        if frame_count >= shoot_delay:
-            for enemy in enemies:
-                bullet = pygame.Rect(
-                    enemy.centerx,
-                    enemy.bottom,
-                    bullet_size,
-                    bullet_size
-                )
-                enemy_bullets.append(bullet)
-            frame_count = 0
-
-        # -------- MUOVI PROIETTILI --------
-        for bullet in enemy_bullets[:]:
-            bullet.y += bullet_speed
-            if bullet.top > SCREEN_HEIGHT:
-                enemy_bullets.remove(bullet)
-
-            # COLLISIONE PROIETTILE → PLAYER
-            if bullet.colliderect(player_rect):
-                print("💀 GAME OVER")
-                running = False
-
-        # -------- COLLISIONE PLAYER → NEMICI --------
-        for enemy in enemies:
-            if player_rect.colliderect(enemy):
-                print("💀 GAME OVER")
-                running = False
-
-        # -------- DISEGNO --------
-        screen.blit(imgSfondo, (0, 0))
-
-        screen.blit(imgPlayer, player_rect)
-
-        for enemy in enemies:
-            screen.blit(imgEnemy, enemy)
-
-        for bullet in enemy_bullets:
-            pygame.draw.rect(screen, (255, 255, 255), bullet)
-
-        pygame.display.flip()
-
-        pygame.quit()
-        pygame.display.flip()
 
         pygame.time.set_timer(ADD_ENEMY, 0)
         home_screen()
+
 
     def level2():
         import random
@@ -353,6 +243,7 @@ def main():
     # --------------------- START ---------------------
     home_screen()
 
+main()
 
             
 
