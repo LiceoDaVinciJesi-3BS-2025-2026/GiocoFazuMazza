@@ -211,6 +211,6 @@ def main() -> None:
     # --------------------- START ---------------------
     home_screen()
             
-pygame.quit()
+    pygame.quit()
 if __name__ == "__main__":
     main()
