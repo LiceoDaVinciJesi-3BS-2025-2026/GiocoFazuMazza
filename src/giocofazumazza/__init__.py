@@ -1,97 +1,22 @@
 
 import pygame
 import random
-
 # -------------------------------------------------------------------------------------------------------------- #
-# ------------------------------------- LEVEL 3 ---------------------------------------------------------------- #
+# ------------------------------------- MAIN ------------------------------------------------------------------- #
+def main():
 
-def level3():
-    imgSpazio = pygame.image.load("spazio.jpg")
-    imgSpazio = pygame.transform.scale(imgSpazio, (SCREEN_WIDTH, SCREEN_HEIGHT))
-    
-    imgBees = pygame.image.load("bees.png")
-    imgBees = pygame.transform.scale(imgBees, (45, 45))
+    pygame.init()
 
-    imgThrugg = pygame.image.load("thrugg.png")
-    imgThrugg = pygame.transform.scale(imgThrugg, (250, 250))
-    
-    ADD_ENEMY = pygame.USEREVENT + 1
-    pygame.time.set_timer(ADD_ENEMY, 1000)
-    
-    #Thrugg
-    thrugg_x = SCREEN_WIDTH // 2 - imgThrugg.get_width() // 2
-    thrugg_y = 50
-    thrugg_speed = 15
-    thrugg_direction = 1  # 1 = destra, -1 = sinistra
-    thruggBullets = []
-    clock = pygame.time.Clock()
-    running = True 
-    
-    enemies = []
-    player_bullets = []
-    enemy_bullets = []
+    SCREEN_WIDTH = 1900
+    SCREEN_HEIGHT = 1000
 
-    x = SCREEN_WIDTH // 2
-    y = SCREEN_HEIGHT // 2
-    w, h = 40, 40
-    speed = 10   
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    pygame.display.set_caption("this game is too MASSIVE")
 
-    clock = pygame.time.Clock()
-    running = True
-    x = SCREEN_WIDTH // 2 - imgThrugg.get_width() // 2
-    y = 50
-    while running:
-        clock.tick(60)
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-        #Thrugg si muove
-        thrugg_x += thrugg_direction * thrugg_speed
-        if thrugg_x <= 0:
-            thrugg_x = 0
-            thrugg_direction *= -1
-        
-        if thrugg_x + imgThrugg.get_width() >= SCREEN_WIDTH:
-            thrugg_x = SCREEN_WIDTH - imgThrugg.get_width()
-            thrugg_direction *= -1
-        screen.blit(imgSpazio, (0, 0))
-        screen.blit(imgThrugg, (thrugg_x, thrugg_y))
-        pygame.display.flip()
-        
-        #Thrugg spara
-        if random.randint(0, 50) < 5:   
-            bullet = pygame.Rect(
-                thrugg_x + imgThrugg.get_width() // 2 - 5,
-                thrugg_y + imgThrugg.get_height(),
-                10, 20
-            )
-            thruggBullets.append(bullet)
-        
-        for bullet in thruggBullets:
-            bullet.y += 10
-        thruggBullets = [b for b in thruggBullets if b.y < SCREEN_HEIGHT]
-
-                # 🔫 Sparo giocatore con SPAZIO
-                # if event.key == pygame.K_SPACE:
-                    #bullet = pygame.Rect(x + w//2 - 5, y, 10, 20)
-                    #player_bullets.append(bullet)
-    running = True
-    while running:
-        #screen.blit(imgSpazio, (0, 0))
-        screen.blit(imgThrugg, (thrugg_x, thrugg_y))
-        for bullet in thruggBullets:
-            pygame.draw.rect(screen, (255, 255, 0), bullet)
-        pygame.display.flip()
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                exit()
-                    
+    home_screen(screen, SCREEN_WIDTH, SCREEN_HEIGHT)
 # -------------------------------------------------------------------------------------------------------------- #
 # ------------------------------------- HOME ------------------------------------------------------------------- #
-def home_screen():
+def home_screen(screen, SCREEN_WIDTH, SCREEN_HEIGHT):
     font = pygame.font.SysFont("comicsansms", 100)
     small_font = pygame.font.SysFont("comicsansms", 60)
 
@@ -115,27 +40,67 @@ def home_screen():
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_3:
-                    level3()
+                    level3(screen, SCREEN_WIDTH, SCREEN_HEIGHT)
                 if event.key == pygame.K_ESCAPE:
                     pygame.quit()
                     exit()
-
-
 # -------------------------------------------------------------------------------------------------------------- #
-# ------------------------------------- MAIN ------------------------------------------------------------------- #
-def main():
+# ------------------------------------- LEVEL 3 ---------------------------------------------------------------- #
 
-    pygame.init()
+def level3(screen, SCREEN_WIDTH, SCREEN_HEIGHT):
 
-    SCREEN_WIDTH = 1900
-    SCREEN_HEIGHT = 1000
+    imgSpazio = pygame.image.load("spazio.jpg")
+    imgSpazio = pygame.transform.scale(imgSpazio, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
-    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-    pygame.display.set_caption("this game is too MASSIVE")
+    imgThrugg = pygame.image.load("Thrugg.png")
+    imgThrugg = pygame.transform.scale(imgThrugg, (250, 250))
 
-    home_screen()   # ← IMPORTANTE
+    thrugg_x = SCREEN_WIDTH // 2 - imgThrugg.get_width() // 2
+    thrugg_y = 50
+    thrugg_speed = 15
+    thrugg_direction = 1
 
+    thruggBullets = []
 
+    clock = pygame.time.Clock()
+    running = True
+
+    while running:
+        clock.tick(60)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+
+        # Movimento
+        thrugg_x += thrugg_direction * thrugg_speed
+        if thrugg_x <= 0 or thrugg_x + imgThrugg.get_width() >= SCREEN_WIDTH:
+            thrugg_direction *= -1
+
+        # Sparo
+        if random.randint(0, 10) < 5:
+            bullet = pygame.Rect(
+                thrugg_x + imgThrugg.get_width() // 2 - 5,
+                thrugg_y + imgThrugg.get_height(),
+                10, 20
+            )
+            thruggBullets.append(bullet)
+
+        # Movimento proiettili
+        for bullet in thruggBullets:
+            bullet.y += 10
+
+        thruggBullets = [b for b in thruggBullets if b.y < SCREEN_HEIGHT]
+
+        # Disegno
+        screen.blit(imgSpazio, (0, 0))
+        screen.blit(imgThrugg, (thrugg_x, thrugg_y))
+
+        for bullet in thruggBullets:
+            pygame.draw.rect(screen, (255, 255, 0), bullet)
+
+        pygame.display.flip()
 # -------------------------------------------------------------------------------------------------------------- #
 # ------------------------------------- EXE -------------------------------------------------------------------- #
 if __name__ == "__main__":
