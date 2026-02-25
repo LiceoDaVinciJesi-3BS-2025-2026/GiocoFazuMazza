@@ -236,6 +236,10 @@ def main():
             pygame.display.flip()
             
         def turn_player():
+            small_font = pygame.font.SysFont("arial", 18)
+            
+            move1 = small_font.render(" INVINCIBLE USE ATTACK, you did 40 dmg", True, (0,0,0))
+            
             nonlocal hp_1, hp_2, difesa_1, doge, player_acted
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -247,12 +251,17 @@ def main():
                         critico = random.randint(1,100)
                         if critico <= 10:
                             hp_2 -= (attack_1*2) - difesa_2
+                            
                         else:
                             hp_2 -= attack_1 - difesa_2
+                            screen.blit(move1, (50, 580))
                         player_acted = True
 
                     if event.key == pygame.K_2:
                         valore = random.randint(1,50)
+                        
+# viene cancellata subito per qualche motivo...
+
                         doge = True if valore >= 25 else False
                         player_acted = True
 
