@@ -187,6 +187,12 @@ def main():
         screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         pygame.display.set_caption("Invincible vs Omni-Man")
         clock = pygame.time.Clock()
+                
+        invincible_img = pygame.image.load("invincible.png").convert_alpha()
+        omniman_img = pygame.image.load("omniman.png").convert_alpha()
+
+        invincible_img = pygame.transform.scale(invincible_img, (250, 350))
+        omniman_img = pygame.transform.scale(omniman_img, (250, 350))
             
         player_acted = False
         doge = False
@@ -222,6 +228,9 @@ def main():
             screen.blit(move2, (50, 680))
             screen.blit(move3, (300, 580))
             screen.blit(move4, (300, 680))
+            
+            screen.blit(invincible_img, (180, 120))
+            screen.blit(omniman_img, (900, 120))
 
             pygame.display.flip()
             
