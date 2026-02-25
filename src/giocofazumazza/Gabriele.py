@@ -202,6 +202,9 @@ def main():
 
             font = pygame.font.SysFont("arial", 25)
             small_font = pygame.font.SysFont("arial", 18)
+            
+            screen.blit(invincible_img, (180, 120))
+            screen.blit(omniman_img, (900, 120))
 
             pygame.draw.rect(screen, (0,0,0), (1100, 50, 300, 100), 3)
             name_text = font.render("omni man", True, (0,0,0))
@@ -229,8 +232,6 @@ def main():
             screen.blit(move3, (300, 580))
             screen.blit(move4, (300, 680))
             
-            screen.blit(invincible_img, (180, 120))
-            screen.blit(omniman_img, (900, 120))
 
             pygame.display.flip()
             
