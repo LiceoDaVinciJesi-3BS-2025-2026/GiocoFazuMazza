@@ -1,4 +1,4 @@
-def main():
+def main() -> None:
     import pygame
     import random
     import sys
@@ -340,7 +340,8 @@ def main():
     # --------------------- START ---------------------
     home_screen()
 
-main()
+if __name__ == "__main__":
+    main()
 
             
 
