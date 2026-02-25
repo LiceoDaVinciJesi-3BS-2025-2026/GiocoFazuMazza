@@ -290,10 +290,13 @@ def main():
         while True:
             font = pygame.font.SysFont("comicsansms", 32)
             clock.tick(60)   # ← rallenta il loop
-            draw_fight_screen()
+            
             turn_player()
+            draw_fight_screen()
+            
 
-            if player_acted:   # ← il bot gioca SOLO dopo di te
+            if player_acted:  # ← il bot gioca SOLO dopo di te
+                pygame.time.delay(1000)
                 turn_bot()
                 player_acted = False
 
