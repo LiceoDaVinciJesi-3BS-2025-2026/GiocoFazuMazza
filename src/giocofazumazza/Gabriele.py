@@ -126,11 +126,10 @@ def main():
                     enemy_bullets.remove(bullet)
 
                 if bullet.colliderect(player):
-                    testo_sconfitta = font.render("HAI PERSO", True, (255, 0, 0))
+                    testo_sconfitta = font.render("YOU LOST", True, (255, 0, 0))
                     screen.blit(testo_sconfitta, (SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2))
                     pygame.display.flip()
                     pygame.time.delay(3000)
-                    running = False
                     running = False
 
             # Nemici
@@ -149,7 +148,7 @@ def main():
                         break
 
                 if player.colliderect(enemy):
-                    testo_sconfitta = font.render("HAI PERSO", True, (255, 0, 0))
+                    testo_sconfitta = font.render("YOU LOST", True, (255, 0, 0))
                     screen.blit(testo_sconfitta, (SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2))
                     pygame.display.flip()
                     pygame.time.delay(3000)
@@ -161,7 +160,7 @@ def main():
             pygame.display.flip()
 
             if punti >= 2000:
-                testo_vittoria = font.render("HAI VINTO", True, (255, 255, 255))
+                testo_vittoria = font.render("YOU WON", True, (255, 255, 0))
                 screen.blit(testo_vittoria, (SCREEN_WIDTH // 2 - 100 , SCREEN_HEIGHT // 2))
                 pygame.display.flip()
                 pygame.time.delay(3000)
@@ -185,7 +184,7 @@ def main():
         difesa_2 = 5
         attack_2 = 30
         
-        screen = pygame.display.set_mode((800, 600))
+        screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         pygame.display.set_caption("Invincible vs Omni-Man")
         clock = pygame.time.Clock()
             
@@ -198,12 +197,12 @@ def main():
             font = pygame.font.SysFont("arial", 25)
             small_font = pygame.font.SysFont("arial", 18)
 
-            pygame.draw.rect(screen, (0,0,0), (450, 50, 300, 100), 3)
+            pygame.draw.rect(screen, (0,0,0), (1100, 50, 300, 100), 3)
             name_text = font.render("omni man", True, (0,0,0))
-            screen.blit(name_text, (460, 60))
+            screen.blit(name_text, (1110, 60))
 
             hp_bar_width = int((hp_2 / 500) * 200)
-            pygame.draw.rect(screen, (255,0,0), (460, 100, hp_bar_width, 20))
+            pygame.draw.rect(screen, (255,0,0), (1110, 100, hp_bar_width, 20))
 
             pygame.draw.rect(screen, (0,0,0), (50, 300, 300, 100), 3)
             player_text = font.render("Invincible", True, (0,0,0))
@@ -212,17 +211,17 @@ def main():
             hp_bar_width_player = int((hp_1 / 200) * 200)
             pygame.draw.rect(screen, (0,255,0), (60, 350, hp_bar_width_player, 20))
 
-            pygame.draw.rect(screen, (0,0,0), (0, 450, 800, 150), 3)
+            pygame.draw.rect(screen, (0,0,0), (0, 500, 1500, 250), 3)
 
-            move1 = small_font.render("1 - Attacco", True, (0,0,0))
-            move2 = small_font.render("2 - Schiva", True, (0,0,0))
-            move3 = small_font.render("3 - Difesa", True, (0,0,0))
-            move4 = small_font.render("4 - Speciale", True, (0,0,0))
+            move1 = small_font.render("1 - Attacck", True, (0,0,0))
+            move2 = small_font.render("2 - doge", True, (0,0,0))
+            move3 = small_font.render("3 - Defence", True, (0,0,0))
+            move4 = small_font.render("4 - Special", True, (0,0,0))
 
-            screen.blit(move1, (50, 470))
-            screen.blit(move2, (50, 500))
-            screen.blit(move3, (300, 470))
-            screen.blit(move4, (300, 500))
+            screen.blit(move1, (50, 580))
+            screen.blit(move2, (50, 680))
+            screen.blit(move3, (300, 580))
+            screen.blit(move4, (300, 680))
 
             pygame.display.flip()
             
@@ -279,6 +278,7 @@ def main():
                     hp_1 -= random.randint(30,90) - difesa_1
 
         while True:
+            font = pygame.font.SysFont("comicsansms", 32)
             clock.tick(60)   # ← rallenta il loop
             draw_fight_screen()
             turn_player()
@@ -297,10 +297,17 @@ def main():
                     doge = False
 
             if hp_1 <= 0:
-                print("YOU LOST")
+                testo_sconfitta = font.render("YOU LOST", True, (255, 0, 0))
+                screen.blit(testo_sconfitta, (SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2))
+                pygame.display.flip()
+                pygame.time.delay(3000)
                 break
             if hp_2 <= 0:
-                print("YOU WON!")
+                clock.tick(60)
+                testo_vittoria = font.render("YOU WON", True, (255, 255, 0))
+                screen.blit(testo_vittoria, (SCREEN_WIDTH // 2 - 100 , SCREEN_HEIGHT // 2))
+                pygame.display.flip()
+                pygame.time.delay(3000)
                 break
         home_screen()
 
