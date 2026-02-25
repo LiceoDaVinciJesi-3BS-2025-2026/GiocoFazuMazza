@@ -192,7 +192,7 @@ def main():
         omniman_img = pygame.image.load("omniman.png").convert_alpha()
 
         invincible_img = pygame.transform.scale(invincible_img, (250, 350))
-        omniman_img = pygame.transform.scale(omniman_img, (250, 350))
+        omniman_img = pygame.transform.scale(omniman_img, (400, 400))
             
         player_acted = False
         doge = False
@@ -203,8 +203,8 @@ def main():
             font = pygame.font.SysFont("arial", 25)
             small_font = pygame.font.SysFont("arial", 18)
             
-            screen.blit(invincible_img, (180, 120))
-            screen.blit(omniman_img, (900, 120))
+            screen.blit(invincible_img, (300, 120))
+            screen.blit(omniman_img, (800, 0))
 
             pygame.draw.rect(screen, (0,0,0), (1100, 50, 300, 100), 3)
             name_text = font.render("omni man", True, (0,0,0))
@@ -294,6 +294,14 @@ def main():
             turn_player()
             draw_fight_screen()
             
+            if hp_2 <= 0:
+                clock.tick(60)
+                testo_vittoria = font.render("YOU WON", True, (255, 255, 0))
+                screen.blit(testo_vittoria, (SCREEN_WIDTH // 2 - 100 , SCREEN_HEIGHT // 2))
+                pygame.display.flip()
+                pygame.time.delay(3000)
+                break
+            
 
             if player_acted:  # ← il bot gioca SOLO dopo di te
                 pygame.time.delay(1000)
@@ -306,7 +314,7 @@ def main():
                 difesa_2 -= 5
 
             if doge:
-                if random.randint(1,3) == 1:
+                if random.randint(1,4) == 1:
                     doge = False
 
             if hp_1 <= 0:
@@ -315,13 +323,7 @@ def main():
                 pygame.display.flip()
                 pygame.time.delay(3000)
                 break
-            if hp_2 <= 0:
-                clock.tick(60)
-                testo_vittoria = font.render("YOU WON", True, (255, 255, 0))
-                screen.blit(testo_vittoria, (SCREEN_WIDTH // 2 - 100 , SCREEN_HEIGHT // 2))
-                pygame.display.flip()
-                pygame.time.delay(3000)
-                break
+            
         home_screen()
 
         
