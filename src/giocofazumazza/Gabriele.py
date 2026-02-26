@@ -22,9 +22,9 @@ def main() -> None:
             screen.fill((20, 20, 30))
 
             title = font.render("THIS GAME IS TOO MASSIVE", True, (255, 255, 0))
-            level1_text = small_font.render("Premi 1 per Livello 1", True, (255, 255, 255))
-            level2_text = small_font.render("Premi 2 per Livello 2", True, (255, 255, 255))
-            quit_text = small_font.render("Premi ESC per uscire", True, (200, 200, 200))
+            level1_text = small_font.render("Press 1 for Level 1", True, (255, 255, 255))
+            level2_text = small_font.render("Press 2 for Level 2", True, (255, 255, 255))
+            quit_text = small_font.render("Press ESC to quit", True, (200, 200, 200))
 
             screen.blit(title, (SCREEN_WIDTH//2 - title.get_width()//2, 200))
             screen.blit(level1_text, (SCREEN_WIDTH//2 - level1_text.get_width()//2, 500))
@@ -196,8 +196,13 @@ def main() -> None:
             
         player_acted = False
         doge = False
+        battle_message = ""
+        battle_message2 = ""
+        text = ""
         
         def draw_fight_screen():
+            nonlocal battle_message, battle_message2
+            
             screen.fill((255, 255, 255))
 
             font = pygame.font.SysFont("arial", 25)
@@ -205,6 +210,16 @@ def main() -> None:
             
             screen.blit(invincible_img, (300, 120))
             screen.blit(omniman_img, (800, 0))
+            
+            if battle_message != "":
+                message_font = pygame.font.SysFont("arial", 22)
+                text = message_font.render(battle_message, True, (0,0,0))
+                screen.blit(text, (550, 530))
+            
+            if battle_message2 != "":
+                message_font = pygame.font.SysFont("arial", 22)
+                text = message_font.render(battle_message2, True, (0,0,0))
+                screen.blit(text, (550, 600))
 
             pygame.draw.rect(screen, (0,0,0), (1100, 50, 300, 100), 3)
             name_text = font.render("omni man", True, (0,0,0))
@@ -238,9 +253,8 @@ def main() -> None:
         def turn_player():
             small_font = pygame.font.SysFont("arial", 18)
             
-            move1 = small_font.render(" INVINCIBLE USE ATTACK, you did 40 dmg", True, (0,0,0))
+            nonlocal hp_1, hp_2, difesa_1, doge, player_acted, battle_message, difesa_2
             
-            nonlocal hp_1, hp_2, difesa_1, doge, player_acted
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -251,54 +265,99 @@ def main() -> None:
                         critico = random.randint(1,100)
                         if critico <= 10:
                             hp_2 -= (attack_1*2) - difesa_2
+                            damage = (attack_1*2) - difesa_2
+                            battle_message = f" YOU DID CRITICAL DAMAGE you did {damage} damage, {hp_2} hp left for omniman"
+ 
                             
                         else:
                             hp_2 -= attack_1 - difesa_2
-                            screen.blit(move1, (50, 580))
+                            damage = attack_1 - difesa_2
+                            battle_message = f" INVINCIBLE USE ATTACK you did {damage} damage, {hp_2} hp left for omnniman"
+                            
+# hai il 50% di possibilita di schivare il prossimo attacco del nemico se il turno precedende eri riuscito a schivare
+                        defence = 5
+# se il bot aveva usato defence, il prossimo turno la sua difesa torna normale
+                        if doge == True:
+                            if random.randint(1,2) == 1:
+                                doge = False
+#abbiamo fatto il nostro turno quindi il bot ora puo avere il suo avendo player acted su TRUE
                         player_acted = True
 
                     if event.key == pygame.K_2:
                         valore = random.randint(1,50)
                         
-# viene cancellata subito per qualche motivo...
+# niente ho risolto
 
-                        doge = True if valore >= 25 else False
+                        if valore >= 25:
+                            doge = True
+                            battle_message = "YOU USED DOGE, AND YOU SUCCEED"
+                        else:
+                            doge = False
+                            battle_message = "YOU USED DOGE BUT FAILED"
+                        difesa_2 = 5
+                            
                         player_acted = True
 
                     if event.key == pygame.K_3:
                         difesa_1 = 20
+                        battle_message = "YOU USED DEFENCE, YOU TAKE 10 LESS DAMAGE AND 5 LESS FOR THE NEXT TURN!"
                         player_acted = True
+                        difesa_2 = 5
+                        if doge == True:
+                            if random.randint(1,2) == 1:
+                                doge = False
 
                     if event.key == pygame.K_4:
-                        hp_2 -= random.randint(10,100) - difesa_2
+                        numero = random.randint(10,100) 
+                        hp_2 -= numero - difesa_2
+                        danno = numero - difesa_2
+                        battle_message = f" YOU USED SPECIAL AND DID {danno} DAMAGE, {hp_2} hp left for omaniman"
                         player_acted = True
+                        difesa_2 = 5
+                        if doge == True:
+                            if random.randint(1,2) == 1:
+                                doge = False
         
         def turn_bot():
-            nonlocal hp_2, hp_1, difesa_2, difesa_1, doge
+            nonlocal hp_2, hp_1, difesa_2, difesa_1, doge, battle_message2
 
             move = random.randint(1,4)
 
             if move == 1:
                 difesa_2 = 20
+                battle_message2 = "OMNIMAN USED DEFENCE, HE WILL TAKE 10 LESS DAMAGE"
 
             elif move == 2:
                 if not doge:
                     critico = random.randint(1,100)
                     if critico <= 10:
                         hp_1 -= attack_2*2 - difesa_1
+                        danno = attack_2*2 - difesa_1
+                        battle_message2 = f"OMNIMAN DID CRITICAL DAMAGE, YOU TOOK {danno} DAMAG, {hp_1} hp left for invincible"
+                    
                     else:
                         hp_1 -= attack_2 - difesa_1
-
+                        danno = attack_2 - difesa_1
+                        battle_message2 = f"OMNIMAN USE ATTACK, YOU TOOK {danno} DAMAGE, {hp_1} hp left for invincible"
+                     
+                if doge == True:
+                    battle_message2 = "OMNIMAN TRIED TO ATTACK, BUT YOU DOGED!"
+                    
             elif move == 3:
                 hp_2 += 20
-
+                battle_message2 = f"OMNIMAN HEALED HIMSELF OF 20 HP!, {hp_2} hp left for omniman"
+             
             elif move == 4:
                 if not doge:
-                    hp_1 -= random.randint(30,90) - difesa_1
+                    dmg = random.randint(30,90)
+                    hp_1 -= dmg - difesa_1
+                    danno = dmg - difesa_1
+                    battle_message2 = f"OMNIMAN USE SPECIAL, YOU TOOK {danno} DAMAGE, {hp_1} hp left for invincible"
+                
 
         while True:
             font = pygame.font.SysFont("comicsansms", 32)
-            clock.tick(60)   # ← rallenta il loop
+            clock.tick(30)   # ← rallenta il loop
             
             turn_player()
             draw_fight_screen()
@@ -319,12 +378,6 @@ def main() -> None:
 
             if difesa_1 > 10:
                 difesa_1 -= 5
-            if difesa_2 > 5:
-                difesa_2 -= 5
-
-            if doge:
-                if random.randint(1,4) == 1:
-                    doge = False
 
             if hp_1 <= 0:
                 testo_sconfitta = font.render("YOU LOST", True, (255, 0, 0))
