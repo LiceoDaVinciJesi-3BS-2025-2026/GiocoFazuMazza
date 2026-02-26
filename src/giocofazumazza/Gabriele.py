@@ -275,7 +275,7 @@ def main() -> None:
                             battle_message = f" INVINCIBLE USE ATTACK you did {damage} damage, {hp_2} hp left for omnniman"
                             
 # hai il 50% di possibilita di schivare il prossimo attacco del nemico se il turno precedende eri riuscito a schivare
-                        defence = 5
+                        difesa_2 = 5
 # se il bot aveva usato defence, il prossimo turno la sua difesa torna normale
                         if doge == True:
                             if random.randint(1,2) == 1:
@@ -308,7 +308,7 @@ def main() -> None:
                                 doge = False
 
                     if event.key == pygame.K_4:
-                        numero = random.randint(10,100) 
+                        numero = random.randint(20,110) 
                         hp_2 -= numero - difesa_2
                         danno = numero - difesa_2
                         battle_message = f" YOU USED SPECIAL AND DID {danno} DAMAGE, {hp_2} hp left for omaniman"
@@ -357,7 +357,7 @@ def main() -> None:
 
         while True:
             font = pygame.font.SysFont("comicsansms", 32)
-            clock.tick(30)   # ← rallenta il loop
+            clock.tick(60)   # ← rallenta il loop
             
             turn_player()
             draw_fight_screen()
