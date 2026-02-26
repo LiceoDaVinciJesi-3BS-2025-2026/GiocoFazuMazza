@@ -54,7 +54,17 @@ def level3(screen, SCREEN_WIDTH, SCREEN_HEIGHT):
 
     imgThrugg = pygame.image.load("Thrugg.png")
     imgThrugg = pygame.transform.scale(imgThrugg, (250, 250))
-
+    
+    imgBees = pygame.image.load("bees.png")
+    imgBees = pygame.transform.scale(imgBees, (60, 60))
+    
+    player_bullets = []
+    
+    x = SCREEN_WIDTH // 2
+    y = SCREEN_HEIGHT // 2
+    w, h = 40, 40
+    speed = 10
+    
     thrugg_x = SCREEN_WIDTH // 2 - imgThrugg.get_width() // 2
     thrugg_y = 50
     thrugg_speed = 15
@@ -72,7 +82,37 @@ def level3(screen, SCREEN_WIDTH, SCREEN_HEIGHT):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    running = False
+                
+                # 🔫 Sparo giocatore con SPAZIO
+                if event.key == pygame.K_SPACE:
+                    bullet = pygame.Rect(x + w//2 - 5, y, 10, 20)
+                    player_bullets.append(bullet)
+        
+        keys = pygame.key.get_pressed()
 
+        if keys[pygame.K_LEFT] and x > 0:
+            x -= speed
+        if keys[pygame.K_RIGHT] and x < SCREEN_WIDTH - w:
+            x += speed
+        if keys[pygame.K_UP] and y > 0:
+            y -= speed
+        if keys[pygame.K_DOWN] and y < SCREEN_HEIGHT - h:
+            y += speed
+
+        screen.blit(imgSpazio, (0, 0))
+
+        player = pygame.Rect(x, y, w, h)
+        screen.blit(imgBees, (x, y))
+
+        # 🔫 Movimento proiettili giocatore
+        for bullet in player_bullets[:]:
+            bullet.y -= 12
+            pygame.draw.rect(screen, (255, 255, 0), bullet)
+            if bullet.y < 0:
+                player_bullets.remove(bullet)
         # Movimento
         thrugg_x += thrugg_direction * thrugg_speed
         if thrugg_x <= 0 or thrugg_x + imgThrugg.get_width() >= SCREEN_WIDTH:
@@ -92,7 +132,15 @@ def level3(screen, SCREEN_WIDTH, SCREEN_HEIGHT):
             bullet.y += 10
 
         thruggBullets = [b for b in thruggBullets if b.y < SCREEN_HEIGHT]
+            # Collisione con proiettili giocatore
+        for bullet in player_bullets[:]:
+            if imgThrugg.colliderect(bullet):
+                imgThrugg.remove(enemy)
+                player_bullets.remove(bullet)
+                break
 
+
+        pygame.display.flip()
         # Disegno
         screen.blit(imgSpazio, (0, 0))
         screen.blit(imgThrugg, (thrugg_x, thrugg_y))
