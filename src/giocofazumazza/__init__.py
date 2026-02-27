@@ -60,6 +60,10 @@ def level3(screen, SCREEN_WIDTH, SCREEN_HEIGHT):
     
     player_bullets = []
     
+    bees_max_life = 5
+    bees_life = bees_max_life
+    
+    font_life = pygame.font.SysFont("comicsansms", 40)
     x = SCREEN_WIDTH // 2
     y = SCREEN_HEIGHT // 2
     w, h = 40, 40
@@ -71,7 +75,11 @@ def level3(screen, SCREEN_WIDTH, SCREEN_HEIGHT):
     thrugg_direction = 1
 
     thruggBullets = []
-
+    
+    bees_x = SCREEN_WIDTH // 2
+    bees_y = SCREEN_HEIGHT - 150
+    bees_speed = 8
+    
     clock = pygame.time.Clock()
     running = True
 
@@ -86,68 +94,90 @@ def level3(screen, SCREEN_WIDTH, SCREEN_HEIGHT):
                 if event.key == pygame.K_ESCAPE:
                     running = False
                 
-                # 🔫 Sparo giocatore con SPAZIO
-                if event.key == pygame.K_SPACE:
-                    bullet = pygame.Rect(x + w//2 - 5, y, 10, 20)
-                    player_bullets.append(bullet)
-        
+            if event.key == pygame.K_SPACE:
+                bullet = pygame.Rect(
+                    bees_x + imgBees.get_width() // 2 - 5,
+                    bees_y,
+                    10,
+                    20
+                )
+                player_bullets.append(bullet)
+                    
         keys = pygame.key.get_pressed()
-
-        if keys[pygame.K_LEFT] and x > 0:
-            x -= speed
-        if keys[pygame.K_RIGHT] and x < SCREEN_WIDTH - w:
-            x += speed
-        if keys[pygame.K_UP] and y > 0:
-            y -= speed
-        if keys[pygame.K_DOWN] and y < SCREEN_HEIGHT - h:
-            y += speed
-
-        screen.blit(imgSpazio, (0, 0))
-
-        player = pygame.Rect(x, y, w, h)
-        screen.blit(imgBees, (x, y))
-
-        # 🔫 Movimento proiettili giocatore
+        bees_rect = pygame.Rect(bees_x, bees_y, imgBees.get_width(), imgBees.get_height())
+        
+        if keys[pygame.K_LEFT] and bees_x > 0:
+            bees_x -= bees_speed
+        if keys[pygame.K_RIGHT] and bees_x < SCREEN_WIDTH - imgBees.get_width():
+            bees_x += bees_speed
+        if keys[pygame.K_UP] and bees_y > 0:
+            bees_y -= bees_speed
+        if keys[pygame.K_DOWN] and bees_y < SCREEN_HEIGHT - imgBees.get_height():
+            bees_y += bees_speed
+    
+    # 🔫 Movimento proiettili giocatore
         for bullet in player_bullets[:]:
             bullet.y -= 12
             pygame.draw.rect(screen, (255, 255, 0), bullet)
             if bullet.y < 0:
                 player_bullets.remove(bullet)
+        
         # Movimento
         thrugg_x += thrugg_direction * thrugg_speed
         if thrugg_x <= 0 or thrugg_x + imgThrugg.get_width() >= SCREEN_WIDTH:
             thrugg_direction *= -1
 
         # Sparo
-        if random.randint(0, 10) < 5:
+        if random.randint(0, 30) < 5:
             bullet = pygame.Rect(
                 thrugg_x + imgThrugg.get_width() // 2 - 5,
                 thrugg_y + imgThrugg.get_height(),
                 10, 20
             )
             thruggBullets.append(bullet)
+        
+        new_bullets = []
 
-        # Movimento proiettili
         for bullet in thruggBullets:
             bullet.y += 10
 
-        thruggBullets = [b for b in thruggBullets if b.y < SCREEN_HEIGHT]
-            # Collisione con proiettili giocatore
-        for bullet in player_bullets[:]:
-            if imgThrugg.colliderect(bullet):
-                imgThrugg.remove(enemy)
-                player_bullets.remove(bullet)
-                break
+            # Collisione con ape
+            if bees_rect.colliderect(bullet):
+                bees_life -= 1
+            else:
+                if bullet.y < SCREEN_HEIGHT:
+                    new_bullets.append(bullet)
 
-
-        pygame.display.flip()
+        thruggBullets = new_bullets
         # Disegno
         screen.blit(imgSpazio, (0, 0))
         screen.blit(imgThrugg, (thrugg_x, thrugg_y))
-
+        screen.blit(imgBees, (bees_x, bees_y))
         for bullet in thruggBullets:
             pygame.draw.rect(screen, (255, 255, 0), bullet)
+        life_text = font_life.render(f"Vita Ape: {bees_life}", True, (255, 0, 0))
+        screen.blit(life_text, (50, 50))
+        if bees_life <= 0:
+            print("GAME OVER")
+            running = False
+        
+        bar_width = 300
+        bar_height = 30
+        bar_x = 50
+        bar_y = 50
 
+        # Calcolo percentuale vita
+        life_ratio = bees_life / bees_max_life
+
+        # Sfondo barra (rosso scuro)
+        pygame.draw.rect(screen, (100, 0, 0), (bar_x, bar_y, bar_width, bar_height))
+
+        # Vita attuale (verde)
+        pygame.draw.rect(screen, (0, 255, 0), (bar_x, bar_y, bar_width * life_ratio, bar_height))
+
+        # Bordo bianco
+        pygame.draw.rect(screen, (255, 255, 255), (bar_x, bar_y, bar_width, bar_height), 3)
+        
         pygame.display.flip()
 # -------------------------------------------------------------------------------------------------------------- #
 # ------------------------------------- EXE -------------------------------------------------------------------- #
