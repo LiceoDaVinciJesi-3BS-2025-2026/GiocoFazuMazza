@@ -62,12 +62,9 @@ def level3(screen, SCREEN_WIDTH, SCREEN_HEIGHT):
     
     bees_max_life = 5
     bees_life = bees_max_life
-    
+    thrugg_max_life = 20
+    thrugg_life = thrugg_max_life
     font_life = pygame.font.SysFont("comicsansms", 40)
-    x = SCREEN_WIDTH // 2
-    y = SCREEN_HEIGHT // 2
-    w, h = 40, 40
-    speed = 10
     
     thrugg_x = SCREEN_WIDTH // 2 - imgThrugg.get_width() // 2
     thrugg_y = 50
@@ -94,14 +91,14 @@ def level3(screen, SCREEN_WIDTH, SCREEN_HEIGHT):
                 if event.key == pygame.K_ESCAPE:
                     running = False
                 
-            if event.key == pygame.K_SPACE:
-                bullet = pygame.Rect(
-                    bees_x + imgBees.get_width() // 2 - 5,
-                    bees_y,
-                    10,
-                    20
-                )
-                player_bullets.append(bullet)
+                if event.key == pygame.K_SPACE:
+                    bullet = pygame.Rect(
+                        bees_x + imgBees.get_width() // 2 - 5,
+                        bees_y,
+                        10,
+                        20
+                    )
+                    player_bullets.append(bullet)
                     
         keys = pygame.key.get_pressed()
         bees_rect = pygame.Rect(bees_x, bees_y, imgBees.get_width(), imgBees.get_height())
@@ -114,12 +111,28 @@ def level3(screen, SCREEN_WIDTH, SCREEN_HEIGHT):
             bees_y -= bees_speed
         if keys[pygame.K_DOWN] and bees_y < SCREEN_HEIGHT - imgBees.get_height():
             bees_y += bees_speed
-    
-    # 🔫 Movimento proiettili giocatore
+        
+        thrugg_rect = pygame.Rect(
+            thrugg_x,
+            thrugg_y,
+            imgThrugg.get_width(),
+            imgThrugg.get_height()
+        )
+
+        bees_rect = pygame.Rect(
+            bees_x,
+            bees_y,
+            imgBees.get_width(),
+            imgBees.get_height()
+        )
         for bullet in player_bullets[:]:
             bullet.y -= 12
-            pygame.draw.rect(screen, (255, 255, 0), bullet)
-            if bullet.y < 0:
+
+            if thrugg_rect.colliderect(bullet):
+                thrugg_life -= 1
+                player_bullets.remove(bullet)
+
+            elif bullet.y < 0:
                 player_bullets.remove(bullet)
         
         # Movimento
@@ -128,39 +141,55 @@ def level3(screen, SCREEN_WIDTH, SCREEN_HEIGHT):
             thrugg_direction *= -1
 
         # Sparo
-        if random.randint(0, 30) < 5:
-            bullet = pygame.Rect(
-                thrugg_x + imgThrugg.get_width() // 2 - 5,
-                thrugg_y + imgThrugg.get_height(),
-                10, 20
-            )
-            thruggBullets.append(bullet)
-        
-        new_bullets = []
-
         for bullet in thruggBullets:
             bullet.y += 10
 
-            # Collisione con ape
             if bees_rect.colliderect(bullet):
                 bees_life -= 1
-            else:
-                if bullet.y < SCREEN_HEIGHT:
-                    new_bullets.append(bullet)
+            elif bullet.y < SCREEN_HEIGHT:
+                new_bullets.append(bullet)
+
+        #thruggBullets = new_bullets
+
+        for bullet in thruggBullets:
+            bullet.y += 10
+#         thrugg_rect = pygame.Rect(
+#             thrugg_x,
+#             thrugg_y,
+#             imgThrugg.get_width(),
+#             imgThrugg.get_height()
+#         )
+            # Collisione con ape
+        if bees_rect.colliderect(bullet):
+            bees_life -= 1
+        else:
+            if bullet.y < SCREEN_HEIGHT:
+                new_bullets.append(bullet)
 
         thruggBullets = new_bullets
         # Disegno
         screen.blit(imgSpazio, (0, 0))
-        screen.blit(imgThrugg, (thrugg_x, thrugg_y))
-        screen.blit(imgBees, (bees_x, bees_y))
-        for bullet in thruggBullets:
-            pygame.draw.rect(screen, (255, 255, 0), bullet)
-        life_text = font_life.render(f"Vita Ape: {bees_life}", True, (255, 0, 0))
-        screen.blit(life_text, (50, 50))
-        if bees_life <= 0:
-            print("GAME OVER")
-            running = False
         
+        #Thrugg
+        screen.blit(imgThrugg, (thrugg_x, thrugg_y))
+        boss_bar_width = 600
+        boss_bar_height = 40
+        boss_bar_x = SCREEN_WIDTH // 2 - boss_bar_width // 2
+        boss_bar_y = 20
+
+        boss_life_ratio = thrugg_life / thrugg_max_life
+
+        # Sfondo barra (rosso scuro)
+        pygame.draw.rect(screen, (120, 0, 0), (boss_bar_x, boss_bar_y, boss_bar_width, boss_bar_height))
+
+        # Vita attuale (rosso acceso)
+        pygame.draw.rect(screen, (255, 0, 0), (boss_bar_x, boss_bar_y, boss_bar_width * boss_life_ratio, boss_bar_height))
+
+        # Bordo bianco
+        pygame.draw.rect(screen, (255, 255, 255), (boss_bar_x, boss_bar_y, boss_bar_width, boss_bar_height), 4)
+        
+        #Bee
+        screen.blit(imgBees, (bees_x, bees_y))
         bar_width = 300
         bar_height = 30
         bar_x = 50
@@ -177,6 +206,23 @@ def level3(screen, SCREEN_WIDTH, SCREEN_HEIGHT):
 
         # Bordo bianco
         pygame.draw.rect(screen, (255, 255, 255), (bar_x, bar_y, bar_width, bar_height), 3)
+        
+        # proiettili giocaotre
+        for bullet in player_bullets:
+            pygame.draw.rect(screen, (255, 255, 0), bullet)
+        # proiettili boss
+        for bullet in thruggBullets:
+            pygame.draw.rect(screen, (255, 255, 0), bullet)
+        life_text = font_life.render(f"Vita Ape: {bees_life}", True, (255, 0, 0))
+        screen.blit(life_text, (50, 50))
+        
+        if bees_life <= 0:
+            print("GAME OVER")
+            running = False
+        
+        if thrugg_life <= 0:
+            print("YOU WIN!")
+            running = False       
         
         pygame.display.flip()
 # -------------------------------------------------------------------------------------------------------------- #
