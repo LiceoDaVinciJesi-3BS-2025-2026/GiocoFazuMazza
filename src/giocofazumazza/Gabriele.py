@@ -325,7 +325,7 @@ def main() -> None:
 
             if move == 1:
                 difesa_2 = 20
-                battle_message2 = "OMNIMAN USED DEFENCE, HE WILL TAKE 10 LESS DAMAGE"
+                battle_message2 = "OMNIMAN USED DEFENCE, HE WILL TAKE 10 LESS DAMAGE FOR THIS TURN"
 
             elif move == 2:
                 if not doge:
@@ -353,6 +353,8 @@ def main() -> None:
                     hp_1 -= dmg - difesa_1
                     danno = dmg - difesa_1
                     battle_message2 = f"OMNIMAN USE SPECIAL, YOU TOOK {danno} DAMAGE, {hp_1} hp left for invincible"
+                if doge == True:
+                    battle_message2 = "OMNIMAN TRIED TO ATTACK, BUT YOU DOGED!"
                 
 
         while True:
