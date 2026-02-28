@@ -2,6 +2,7 @@ def main() -> None:
     import pygame
     import random
     import sys
+    import time
 
     pygame.init()
 
@@ -184,6 +185,15 @@ def main() -> None:
         difesa_2 = 5
         attack_2 = 30
         
+        invincible_x = 300
+        omniman_x = 800
+
+        animating = False
+        animation_target = None
+        animation_speed = 20
+        
+#variabili per le animazioni
+        
         screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         pygame.display.set_caption("Invincible vs Omni-Man")
         clock = pygame.time.Clock()
@@ -208,8 +218,8 @@ def main() -> None:
             font = pygame.font.SysFont("arial", 25)
             small_font = pygame.font.SysFont("arial", 18)
             
-            screen.blit(invincible_img, (300, 120))
-            screen.blit(omniman_img, (800, 0))
+            screen.blit(invincible_img, (invincible_x, 120))
+            screen.blit(omniman_img, (omniman_x, 0))
             
             if battle_message != "":
                 message_font = pygame.font.SysFont("arial", 22)
@@ -253,7 +263,7 @@ def main() -> None:
         def turn_player():
             small_font = pygame.font.SysFont("arial", 18)
             
-            nonlocal hp_1, hp_2, difesa_1, doge, player_acted, battle_message, difesa_2
+            nonlocal hp_1, hp_2, difesa_1, doge, player_acted, battle_message, difesa_2, animating, animation_target
             
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -262,6 +272,11 @@ def main() -> None:
 
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_1:
+                        
+                        animating = True
+                        animation_target = "player_attack"
+#prima di avere le variabili e danno, ci sarà l'animazione dell'attacco
+                        
                         critico = random.randint(1,100)
                         if critico <= 10:
                             hp_2 -= (attack_1*2) - difesa_2
@@ -308,6 +323,9 @@ def main() -> None:
                                 doge = False
 
                     if event.key == pygame.K_4:
+                        
+                        animating = True
+                        animation_target = "player_attack"
                         numero = random.randint(20,110) 
                         hp_2 -= numero - difesa_2
                         danno = numero - difesa_2
@@ -362,6 +380,15 @@ def main() -> None:
             clock.tick(60)   # ← rallenta il loop
             
             turn_player()
+            if animating:
+                if animation_target == "player_attack":
+                    if invincible_x < omniman_x:
+                        invincible_x += animation_speed
+                        
+                    else:
+                        invincible_x = 300
+                        animating = False
+                        
             draw_fight_screen()
             
             if hp_2 <= 0:
@@ -372,7 +399,6 @@ def main() -> None:
                 pygame.time.delay(3000)
                 break
             
-
             if player_acted:  # ← il bot gioca SOLO dopo di te
                 pygame.time.delay(1000)
                 turn_bot()
