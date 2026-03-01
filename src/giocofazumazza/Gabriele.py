@@ -189,8 +189,12 @@ def main() -> None:
         omniman_x = 800
 
         animating = False
+        animating2 = False
         animation_target = None
+        animation_target2 = None
         animation_speed = 20
+        animation_speed2 = 20
+        animation = False
         
 #variabili per le animazioni
         
@@ -263,7 +267,7 @@ def main() -> None:
         def turn_player():
             small_font = pygame.font.SysFont("arial", 18)
             
-            nonlocal hp_1, hp_2, difesa_1, doge, player_acted, battle_message, difesa_2, animating, animation_target
+            nonlocal hp_1, hp_2, difesa_1, doge, player_acted, battle_message, difesa_2, animating, animation_target, animation
             
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -300,20 +304,25 @@ def main() -> None:
 
                     if event.key == pygame.K_2:
                         valore = random.randint(1,50)
+                        animation = True
                         
 # niente ho risolto
 
                         if valore >= 25:
                             doge = True
                             battle_message = "YOU USED DOGE, AND YOU SUCCEED"
+                            player_acted = True
+                            difesa_2 = 5
                         else:
                             doge = False
                             battle_message = "YOU USED DOGE BUT FAILED"
-                        difesa_2 = 5
+                            player_acted = True
+                            difesa_2 = 5
                             
-                        player_acted = True
+                        
 
                     if event.key == pygame.K_3:
+                        animation = True
                         difesa_1 = 20
                         battle_message = "YOU USED DEFENCE, YOU TAKE 10 LESS DAMAGE AND 5 LESS FOR THE NEXT TURN!"
                         player_acted = True
@@ -337,7 +346,7 @@ def main() -> None:
                                 doge = False
         
         def turn_bot():
-            nonlocal hp_2, hp_1, difesa_2, difesa_1, doge, battle_message2
+            nonlocal hp_2, hp_1, difesa_2, difesa_1, doge, battle_message2, animation_target2, animating2
 
             move = random.randint(1,4)
 
@@ -347,6 +356,8 @@ def main() -> None:
 
             elif move == 2:
                 if not doge:
+                    animating2 = True
+                    animation_target2 = "player_attack"
                     critico = random.randint(1,100)
                     if critico <= 10:
                         hp_1 -= attack_2*2 - difesa_1
@@ -366,6 +377,8 @@ def main() -> None:
                 battle_message2 = f"OMNIMAN HEALED HIMSELF OF 20 HP!, {hp_2} hp left for omniman"
              
             elif move == 4:
+                animating2 = True
+                animation_target2 = "player_attack"
                 if not doge:
                     dmg = random.randint(30,90)
                     hp_1 -= dmg - difesa_1
@@ -388,6 +401,7 @@ def main() -> None:
                     else:
                         invincible_x = 300
                         animating = False
+                        animation = True
                         
             draw_fight_screen()
             
@@ -399,10 +413,20 @@ def main() -> None:
                 pygame.time.delay(3000)
                 break
             
-            if player_acted:  # ← il bot gioca SOLO dopo di te
+            if player_acted and animation:  # ← il bot gioca SOLO dopo di te
                 pygame.time.delay(1000)
                 turn_bot()
                 player_acted = False
+                animation = False
+            
+            if animating2:
+                if animation_target2 == "player_attack":
+                    if omniman_x > invincible_x:
+                        omniman_x -= animation_speed2
+                    else:
+                        omniman_x = 800
+                        animating2 = False
+                        #animation = True
 
             if difesa_1 > 10:
                 difesa_1 -= 5
