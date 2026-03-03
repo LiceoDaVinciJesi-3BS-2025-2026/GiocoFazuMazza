@@ -267,8 +267,7 @@ def main() -> None:
         def turn_player():
             small_font = pygame.font.SysFont("arial", 18)
             
-            nonlocal hp_1, hp_2, difesa_1, doge, player_acted, battle_message, difesa_2, animating, animation_target, animation
-            
+            nonlocal hp_1, hp_2, difesa_1, doge, player_acted, battle_message, difesa_2, animating, animation_target, animation, animating2
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -392,7 +391,9 @@ def main() -> None:
             font = pygame.font.SysFont("comicsansms", 32)
             clock.tick(60)   # ← rallenta il loop
             
-            turn_player()
+            if player_acted == False and animating2 == False:
+                turn_player()
+                
             if animating:
                 if animation_target == "player_attack":
                     if invincible_x < omniman_x:
@@ -414,7 +415,7 @@ def main() -> None:
                 break
             
             if player_acted and animation:  # ← il bot gioca SOLO dopo di te
-                pygame.time.delay(1000)
+                pygame.time.delay(500)
                 turn_bot()
                 player_acted = False
                 animation = False
