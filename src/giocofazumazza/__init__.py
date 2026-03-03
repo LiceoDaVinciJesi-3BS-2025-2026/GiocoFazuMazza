@@ -2,6 +2,15 @@
 import pygame
 import random
 
+def main():
+
+    pygame.init()
+
+    SCREEN_WIDTH = 1900
+    SCREEN_HEIGHT = 1000
+
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    pygame.display.set_caption("this game is too MASSIVE")
 # -------------------------------------------------------------------------------------------------------------- #
 # ------------------------------------- LEVEL 3 ---------------------------------------------------------------- #
 
@@ -123,15 +132,7 @@ def home_screen():
 
 # -------------------------------------------------------------------------------------------------------------- #
 # ------------------------------------- MAIN ------------------------------------------------------------------- #
-def main():
 
-    pygame.init()
-
-    SCREEN_WIDTH = 1900
-    SCREEN_HEIGHT = 1000
-
-    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-    pygame.display.set_caption("this game is too MASSIVE")
 
     home_screen()   # ← IMPORTANTE
 
