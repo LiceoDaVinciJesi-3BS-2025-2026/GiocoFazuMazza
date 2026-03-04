@@ -69,7 +69,7 @@ def level3(screen, SCREEN_WIDTH, SCREEN_HEIGHT):
     # -------------------- movimento personaggi --------------------
     thrugg_x = SCREEN_WIDTH // 2 - imgThrugg.get_width() // 2
     thrugg_y = 50
-    thrugg_speed = 15
+    thrugg_speed = 10
     thrugg_direction = 1
 
     bees_x = SCREEN_WIDTH // 2
@@ -81,7 +81,7 @@ def level3(screen, SCREEN_WIDTH, SCREEN_HEIGHT):
     thruggBullets = []
     boss_bullet_speed = 200
 
-    boss_shoot_delay = 150
+    boss_shoot_delay = 200
     boss_last_shot = 0
 
     # -------------------- POWERUPS --------------------
