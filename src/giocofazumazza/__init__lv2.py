@@ -170,7 +170,7 @@ def main() -> None:
         pygame.time.set_timer(ADD_ENEMY, 0)
         home_screen()
 
-
+#------------------------ LEVEL 2 ----------------------------------------------------------#
     def level2():
 
         import random
