@@ -79,9 +79,9 @@ def level3(screen, SCREEN_WIDTH, SCREEN_HEIGHT):
     # -------------------- proiettili personaggi --------------------
     player_bullets = []
     thruggBullets = []
-    boss_bullet_speed = 200
+    boss_bullet_speed = 400
 
-    boss_shoot_delay = 200
+    boss_shoot_delay = 150
     boss_last_shot = 0
 
     # -------------------- POWERUPS --------------------
