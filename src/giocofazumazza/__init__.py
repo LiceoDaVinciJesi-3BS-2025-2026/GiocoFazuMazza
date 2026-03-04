@@ -64,12 +64,12 @@ def level3(screen, SCREEN_WIDTH, SCREEN_HEIGHT):
     thrugg_max_life = 100
     thrugg_life = thrugg_max_life
 
-    heal_amount = 10
+    heal_amount = 8
 
     # -------------------- movimento personaggi --------------------
     thrugg_x = SCREEN_WIDTH // 2 - imgThrugg.get_width() // 2
     thrugg_y = 50
-    thrugg_speed = 10
+    thrugg_speed = 5
     thrugg_direction = 1
 
     bees_x = SCREEN_WIDTH // 2
@@ -81,7 +81,7 @@ def level3(screen, SCREEN_WIDTH, SCREEN_HEIGHT):
     thruggBullets = []
     boss_bullet_speed = 400
 
-    boss_shoot_delay = 150
+    boss_shoot_delay = 130
     boss_last_shot = 0
 
     # -------------------- POWERUPS --------------------
@@ -192,26 +192,38 @@ def level3(screen, SCREEN_WIDTH, SCREEN_HEIGHT):
 
         thruggBullets = new_bullets
 
-        # -------------------- POWERUP SPAWN --------------------
-        if random.randint(0, 300) == 0:
+    # -------------------- POWERUP SPAWN --------------------
+        if random.randint(0, 190) == 0:
             power_type = random.choice(["double", "shield", "heal"])
             power_rect = pygame.Rect(random.randint(50, SCREEN_WIDTH - 50), 0, 40, 40)
             powerups.append({"rect": power_rect, "type": power_type})
 
-        # -------------------- POWERUP TIMERS --------------------
-        if double_shot and current_time - double_timer > 3000:
+    # -------------------- durata power up in game --------------------
+        if double_shot and current_time - double_timer > 5000:
             double_shot = False
 
-        if shield_active and current_time - shield_timer > 3000:
+        if shield_active and current_time - shield_timer > 7000:
             shield_active = False
         
         if heal_active and current_time - heal_timer > 3000:
             heal_active = False
-        # -------------------- DRAW --------------------
+
+# -------------------- disegno --------------------------------------------#
         screen.blit(imgSpazio, (0, 0))
         screen.blit(imgThrugg, (thrugg_x, thrugg_y))
         screen.blit(imgBees, (bees_x, bees_y))
+        
+        # Mark con scudo attivo...che forza 
+        if shield_active:
+            center = (
+                bees_x + imgBees.get_width() // 2,
+                bees_y + imgBees.get_height() // 2
+            )
 
+            # cerchio esterno trasparente (glow)
+            pygame.draw.circle(screen, (0, 255, 255), center, imgBees.get_width() + 5, 2)
+            pygame.draw.circle(screen, (0, 200, 255), center, imgBees.get_width(), 10)
+        
         # Boss life bar
         boss_ratio = thrugg_life / thrugg_max_life
         pygame.draw.rect(screen, (120, 0, 0), (SCREEN_WIDTH//2 - 300, 20, 600, 40))
