@@ -58,7 +58,7 @@ def level3(screen, SCREEN_WIDTH, SCREEN_HEIGHT):
     imgBees = pygame.image.load("bees.png")
     imgBees = pygame.transform.scale(imgBees, (60, 60))
 
-    # -------------------- PLAYER & BOSS STATS --------------------
+# -------------------- PLAYER & BOSS STATS ---------------------------#
     bees_max_life = 50
     bees_life = bees_max_life
     thrugg_max_life = 100
@@ -66,7 +66,7 @@ def level3(screen, SCREEN_WIDTH, SCREEN_HEIGHT):
 
     heal_amount = 8
 
-    # -------------------- movimento personaggi --------------------
+# -------------------- MOVIMENTO PERSONAGGI ----------------------------#
     thrugg_x = SCREEN_WIDTH // 2 - imgThrugg.get_width() // 2
     thrugg_y = 50
     thrugg_speed = 5
@@ -76,7 +76,7 @@ def level3(screen, SCREEN_WIDTH, SCREEN_HEIGHT):
     bees_y = SCREEN_HEIGHT - 150
     bees_speed = 8
 
-    # -------------------- proiettili personaggi --------------------
+# -------------------- PROIETTILI PERSONAGGI --------------------#
     player_bullets = []
     thruggBullets = []
     boss_bullet_speed = 400
@@ -84,7 +84,7 @@ def level3(screen, SCREEN_WIDTH, SCREEN_HEIGHT):
     boss_shoot_delay = 130
     boss_last_shot = 0
 
-    # -------------------- POWERUPS --------------------
+# -------------------- POWERUPS ---------------------------#
     powerups = []
     double_shot = False
     double_timer = 0
@@ -94,18 +94,19 @@ def level3(screen, SCREEN_WIDTH, SCREEN_HEIGHT):
     
     heal_active = False
     heal_timer = 0
-    # -------------------- UTILS --------------------
+# -------------------- UTILS -----------------------------------#
     font_life = pygame.font.SysFont("comicsansms", 40)
     clock = pygame.time.Clock()
     running = True
 
-#--------------------------------gioco--------------------------------------#
+#----------------------------------------------      -------------------------------------------------------#
+#-----------------------------------------------GIOCO-------------------------------------------------------#
     
     while running:
         delta_time = clock.tick(60) / 1000
         current_time = pygame.time.get_ticks()
 
-        # -------------------- EVENTS --------------------
+        # -------------------- EVENTS -------------------------------------#
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -129,7 +130,7 @@ def level3(screen, SCREEN_WIDTH, SCREEN_HEIGHT):
                         )
                         player_bullets.append(bullet)
 
-        # -------------------- PLAYER MOVEMENT --------------------
+    # -------------------- MOVIMENTO GIOCATORE --------------------------------------------------------#
         keys = pygame.key.get_pressed()
 
         if keys[pygame.K_LEFT] and bees_x > 0:
@@ -143,14 +144,14 @@ def level3(screen, SCREEN_WIDTH, SCREEN_HEIGHT):
 
         bees_rect = pygame.Rect(bees_x, bees_y, imgBees.get_width(), imgBees.get_height())
 
-        # -------------------- BOSS MOVEMENT --------------------
+    # -------------------- MOVIMENTO BOSS ---------------------------------------------------------#
         thrugg_x += thrugg_direction * thrugg_speed
         if thrugg_x <= 0 or thrugg_x + imgThrugg.get_width() >= SCREEN_WIDTH:
             thrugg_direction *= -1
 
         thrugg_rect = pygame.Rect(thrugg_x, thrugg_y, imgThrugg.get_width(), imgThrugg.get_height())
 
-        # -------------------- PLAYER BULLETS --------------------
+    # -------------------- PROIETTILI GIOCATORE --------------------------------------#
         for bullet in player_bullets[:]:
             bullet.y -= 600 * delta_time
 
@@ -161,7 +162,7 @@ def level3(screen, SCREEN_WIDTH, SCREEN_HEIGHT):
             elif bullet.y < 0:
                 player_bullets.remove(bullet)
 
-        # -------------------- BOSS SHOOT --------------------
+    # ----------------------- SPARO CASUALE DEL BOSS ---------------------------------#
         if current_time - boss_last_shot > boss_shoot_delay:
             bullet_rect = pygame.Rect(
                 thrugg_x + imgThrugg.get_width() // 2 - 5,
@@ -177,7 +178,7 @@ def level3(screen, SCREEN_WIDTH, SCREEN_HEIGHT):
 
             boss_last_shot = current_time
 
-        # -------------------- BOSS BULLETS --------------------
+    # -------------------- PROIETTILI BOSS --------------------------------------#
         new_bullets = []
 
         for bullet in thruggBullets:
@@ -192,13 +193,13 @@ def level3(screen, SCREEN_WIDTH, SCREEN_HEIGHT):
 
         thruggBullets = new_bullets
 
-    # -------------------- POWERUP SPAWN --------------------
+    # -------------------- POWERUP SPAWN ----------------------------------------------#
         if random.randint(0, 190) == 0:
             power_type = random.choice(["double", "shield", "heal"])
             power_rect = pygame.Rect(random.randint(50, SCREEN_WIDTH - 50), 0, 40, 40)
             powerups.append({"rect": power_rect, "type": power_type})
 
-    # -------------------- durata power up in game --------------------
+    # -------------------- DURATA POWERUP -------------------------------------------------#
         if double_shot and current_time - double_timer > 5000:
             double_shot = False
 
@@ -208,7 +209,8 @@ def level3(screen, SCREEN_WIDTH, SCREEN_HEIGHT):
         if heal_active and current_time - heal_timer > 3000:
             heal_active = False
 
-# -------------------- disegno --------------------------------------------#
+#----------------------       --------------------------------------------------------------------------------#
+# -------------------- DISEGNO -------------------------------------------------------------------------------#
         screen.blit(imgSpazio, (0, 0))
         screen.blit(imgThrugg, (thrugg_x, thrugg_y))
         screen.blit(imgBees, (bees_x, bees_y))
@@ -224,26 +226,26 @@ def level3(screen, SCREEN_WIDTH, SCREEN_HEIGHT):
             pygame.draw.circle(screen, (0, 255, 255), center, imgBees.get_width() + 5, 2)
             pygame.draw.circle(screen, (0, 200, 255), center, imgBees.get_width(), 10)
         
-        # Boss life bar
+        # VITA BOSS
         boss_ratio = thrugg_life / thrugg_max_life
         pygame.draw.rect(screen, (120, 0, 0), (SCREEN_WIDTH//2 - 300, 20, 600, 40))
         pygame.draw.rect(screen, (255, 0, 0), (SCREEN_WIDTH//2 - 300, 20, 600 * boss_ratio, 40))
         pygame.draw.rect(screen, (255, 255, 255), (SCREEN_WIDTH//2 - 300, 20, 600, 40), 4)
 
-        # Player life bar
+        # VITA GIOCATORE
         life_ratio = bees_life / bees_max_life
         pygame.draw.rect(screen, (100, 0, 0), (50, 50, 300, 30))
         pygame.draw.rect(screen, (0, 255, 0), (50, 50, 300 * life_ratio, 30))
         pygame.draw.rect(screen, (255, 255, 255), (50, 50, 300, 30), 3)
 
-        # Draw bullets
+        # PROIETTILI
         for bullet in player_bullets:
             pygame.draw.rect(screen, (255, 255, 0), bullet)
 
         for bullet in thruggBullets:
             pygame.draw.rect(screen, (255, 0, 0), bullet["rect"])
 
-        # Power up
+        # POWERUP
         new_powerups = []
 
         for power in powerups:
@@ -266,7 +268,7 @@ def level3(screen, SCREEN_WIDTH, SCREEN_HEIGHT):
                 if power["rect"].y < SCREEN_HEIGHT:
                     new_powerups.append(power)
 
-            # Disegno powerup
+            # DISEGNO POWERUP
             if power["type"] == "double":
                 color = (200, 0, 255)
             elif power["type"] == "shield":
@@ -277,7 +279,8 @@ def level3(screen, SCREEN_WIDTH, SCREEN_HEIGHT):
             pygame.draw.rect(screen, color, power["rect"])
 
         powerups = new_powerups
-                    
+        
+        #GAME OVER/WIN            
         if bees_life <= 0:
             print("GAME OVER")
             running = False
