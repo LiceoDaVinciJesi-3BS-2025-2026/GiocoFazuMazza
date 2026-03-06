@@ -61,7 +61,7 @@ def level3(screen, SCREEN_WIDTH, SCREEN_HEIGHT):
 # -------------------- PLAYER & BOSS STATS ---------------------------#
     bees_max_life = 50
     bees_life = bees_max_life
-    thrugg_max_life = 100
+    thrugg_max_life = 500
     thrugg_life = thrugg_max_life
 
     heal_amount = 8
