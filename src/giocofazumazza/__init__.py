@@ -771,7 +771,7 @@ def main() -> None:
                 #GAME OVER/WIN            
             if bees_life <= 0:
                 testo_sconfitta = font.render("YOU LOST", True, (255, 0, 0))
-                screen.blit(testo_sconfitta, (SCREEN_WIDTH//2 - testo_vittoria.get_width()//2, SCREEN_HEIGHT//2))
+                screen.blit(testo_sconfitta, (SCREEN_WIDTH//2 - testo_sconfitta.get_width()//2, SCREEN_HEIGHT//2))
                 pygame.display.flip()
                 pygame.time.delay(3000)
                 running = False
