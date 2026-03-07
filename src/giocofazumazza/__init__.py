@@ -787,7 +787,7 @@ def main() -> None:
             
             if bees_rect.colliderect(thrugg_rect):
                     testo_sconfitta = font.render("YOU LOST", True, (255, 0, 0))
-                    screen.blit(testo_sconfitta, (SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2))
+                    screen.blit(testo_sconfitta, (SCREEN_WIDTH//2 - testo_sconfitta.get_width()//2, SCREEN_HEIGHT//2))
                     pygame.display.flip()
                     pygame.mixer.music.pause()
                     pygame.time.delay(3000)
