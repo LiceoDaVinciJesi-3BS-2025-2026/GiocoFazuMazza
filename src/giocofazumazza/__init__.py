@@ -83,7 +83,8 @@ def level3(screen, SCREEN_WIDTH, SCREEN_HEIGHT):
     boss_bullet_speed = 50 
     thruggBullets = []
     new_bullets = []
-    
+    boss_shoot_cooldown = 0.3  # secondi tra i colpi
+    last_boss_shot_time = 0
     bees_x = SCREEN_WIDTH // 2
     bees_y = SCREEN_HEIGHT - 150
     bees_speed = 8
