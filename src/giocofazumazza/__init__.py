@@ -242,7 +242,7 @@ def main() -> None:
         invincible_img = pygame.image.load("invincible.png").convert_alpha()
         omniman_img = pygame.image.load("omniman.png").convert_alpha()
 
-        invincible_img = pygame.transform.scale(invincible_img, (250, 350))
+        invincible_img = pygame.transform.scale(invincible_img, (300, 350))
         omniman_img = pygame.transform.scale(omniman_img, (400, 400))
 
         player_acted = False
