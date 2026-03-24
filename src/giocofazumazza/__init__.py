@@ -378,7 +378,7 @@ def main() -> None:
                         player_acted = True
                         difesa_2 = 5
 
-<<<<<<< HEAD
+
     double_shot = False
     double_timer = 0
     
@@ -408,34 +408,31 @@ def main() -> None:
     
     clock = pygame.time.Clock()
     running = True
-=======
-                    if event.key == pygame.K_3:
-                        animation = True
-                        difesa_1 = 20
-                        battle_message = "YOU USED DEFENCE! -10 damage taken this turn!"
-                        player_acted = True
-                        difesa_2 = 5
-                        if doge:
-                            if random.randint(1, 2) == 1:
-                                doge = False
->>>>>>> d986abc135ab861f05cf51cc2886c922b4a3cf6f
+                if event.key == pygame.K_3:
+                    animation = True
+                    difesa_1 = 20
+                    battle_message = "YOU USED DEFENCE! -10 damage taken this turn!"
+                    player_acted = True
+                    difesa_2 = 5
+                    if doge:
+                        if random.randint(1, 2) == 1:
+                            doge = False
 
-                    if event.key == pygame.K_4:
-                        animating = True
-                        animation_target = "player_attack"
-                        numero = random.randint(20, 110)
-                        hp_2 -= numero - difesa_2
-                        danno = numero - difesa_2
-                        battle_message = f"SPECIAL ATTACK! {danno} damage, {hp_2} hp left for Omniman"
-                        screen_shake = 15
-                        flash_color = (255, 0, 0)
-                        flash_alpha = 180
-                        add_floating_text(f"SPECIAL! -{danno}", omniman_x + 50, 60, color=(255, 0, 0))
-                        player_acted = True
-                        difesa_2 = 5
-                        if doge:
-                            if random.randint(1, 2) == 1:
-                                doge = False
+                if event.key == pygame.K_4:
+                    animating = True
+                    animation_target = "player_attack"
+                    numero = random.randint(20, 110)
+                    hp_2 -= numero - difesa_2
+                    danno = numero - difesa_2
+                    battle_message = f"SPECIAL ATTACK! {danno} damage, {hp_2} hp left for Omniman"
+                    screen_shake = 15                        flash_color = (255, 0, 0)
+                    flash_alpha = 180
+                    add_floating_text(f"SPECIAL! -{danno}", omniman_x + 50, 60, color=(255, 0, 0))
+                    player_acted = True
+                    difesa_2 = 5
+                    if doge:
+                        if random.randint(1, 2) == 1:
+                            doge = False
 
         def turn_bot():
             nonlocal hp_2, hp_1, difesa_2, difesa_1, doge, battle_message2, \
