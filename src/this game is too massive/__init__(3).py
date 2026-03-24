@@ -132,7 +132,11 @@ def level3(screen, SCREEN_WIDTH, SCREEN_HEIGHT):
 
     # -------------------- MOVIMENTO GIOCATORE --------------------------------------------------------#
         keys = pygame.key.get_pressed()
+<<<<<<< Updated upstream:src/this game is too massive/__init__(3).py
 
+=======
+        bees_rect = pygame.Rect(bees_x, bees_y, imgBees.get_width(), imgBees.get_height())
+>>>>>>> Stashed changes:src/giocofazumazza/__init__.py
         if keys[pygame.K_LEFT] and bees_x > 0:
             bees_x -= bees_speed
         if keys[pygame.K_RIGHT] and bees_x < SCREEN_WIDTH - imgBees.get_width():
