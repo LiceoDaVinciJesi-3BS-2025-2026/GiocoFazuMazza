@@ -54,7 +54,7 @@ def home_screen():
 
 # --------------------- LIVELLO 1 ---------------------
 def level1():
-    pygame.mixer.music.load("megalovania.mp3")
+    pygame.mixer.music.load("mega.mp3")
     pygame.mixer.music.set_volume(0.5)
     pygame.mixer.music.play(-1)
 
